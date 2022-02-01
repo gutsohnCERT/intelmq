@@ -39,6 +39,7 @@ CHANGELOG
 
 #### Collectors
 - `intelmq.bots.collectors.mail._lib`: Add support for unverified SSL/STARTTLS connections (PR#2055 by Sebastian Wagner).
+- `intelmq.bots.collectors.file.collector_file`: Added file lock support, no more race conditions (PR#2147 by Sebastian Waldbauer)
 
 #### Parsers
 - `intelmq.bots.parsers.alienvault.parser_otx`: Save CVE data in `extra.cve` instead of `extra.CVE` due to the field name restriction on lower-case characters  (PR#2059 by Sebastian Wagner).
