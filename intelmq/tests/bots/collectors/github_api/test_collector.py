@@ -35,8 +35,7 @@ EXAMPLE_CONTENT_STR = str(EXAMPLE_CONTENT_JSON)
 SHOULD_PASS_WITH_TXT_FILES_AND_EXTRA_FIELD_SIZE_TEST = {
     'CONFIG': {
         'name': 'Github feed',
-        'basic_auth_username': 'dummy_user',
-        'basic_auth_password': 'dummy_password',
+        'personal_access_token': 'super_special_access_token',
         'repository': 'author/repository',
         'extra_fields': 'size, sha',
         'regex': '.*.txt'
@@ -59,20 +58,9 @@ SHOULD_PASS_WITH_TXT_FILES_AND_EXTRA_FIELD_SIZE_TEST = {
 SHOULD_FAIL_BECAUSE_REPOSITORY_IS_NOT_VALID_CONFIG = {
     'CONFIG': {
         'name': 'Github feed',
-        'basic_auth_username': 'dummy_user',
-        'basic_auth_password': 'dummy_password',
+        'personal_access_token': 'super_special_access_token',
         'repository': 'author/',
         'extra_fields': 'size',
-        'regex': '.*.txt'
-    }
-}
-
-SHOULD_FAIL_WITH_BAD_CREDENTIALS = {
-    'CONFIG': {
-        'name': 'Github feed',
-        'basic_auth_username': 'dummy_user',
-        'basic_auth_password': 'bad_dummy_password',
-        'repository': 'author/repo',
         'regex': '.*.txt'
     }
 }
@@ -123,15 +111,6 @@ class TestGithubContentsAPICollectorBot(test.BotTestCase, TestCase):
         self.allowed_error_count = 1  # allow only single and final Error to be raised
         self.run_bot(parameters=SHOULD_FAIL_BECAUSE_REPOSITORY_IS_NOT_VALID_CONFIG['CONFIG'], prepare=True)
         self.assertRegexpMatchesLog(pattern=".*Unknown repository.*")  # assert the expected ValueError msg
-
-    @patch('intelmq.bots.collectors.github_api.collector_github_contents_api.requests.get')
-    def test_collector_should_fail_with_bad_credentials(self, requests_get_mock):
-        requests_get_mock.return_value.json = MagicMock(return_value={'message': 'Bad Credentials'})
-        requests_get_mock.return_value.configure_mock(status_code=401)
-
-        self.allowed_error_count = 1
-        self.run_bot(parameters=SHOULD_FAIL_WITH_BAD_CREDENTIALS['CONFIG'], prepare=True)
-        self.assertRegexpMatchesLog(pattern=".*Bad Credentials.*")
 
     @patch('intelmq.bots.collectors.github_api.collector_github_contents_api.requests.get')
     def test_adding_extra_fields_should_warn(self, requests_get_mock):

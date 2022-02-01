@@ -723,7 +723,7 @@ providers:
         services on the router or tried to gain access to them. The list also
         contains a list of tags for each address which
         indicate what behaviour of the address was observed.
-        
+
         The Turris Greylist feed provides PGP signatures for the provided files.
         You will need to import the public PGP key from the linked documentation
         page, currently available at
@@ -731,13 +731,13 @@ providers:
         or from below.
         See the URL Fetcher Collector documentation for more information on
         PGP signature verification.
-        
+
         PGP Public key:
         ```
         -----BEGIN PGP PUBLIC KEY BLOCK-----
         Version: SKS 1.1.6
         Comment: Hostname: pgp.mit.edu
-        
+
         mQINBFRl7D8BEADaRFoDa/+r27Gtqrdn8sZL4aSYTU4Q3gDr3TfigK8H26Un/Y79a/DUL1o0
         o8SRae3uwVcjJDHZ6KDnxThbqF7URfpuCcCYxOs8p/eu3dSueqEGTODHWF4ChIh2japJDc4t
         3FQHbIh2e3GHotVqJGhvxMmWqBFoZ/mlWvhjs99FFBZ87qbUNk7l1UAGEXeWeECgz9nGox40
@@ -1887,10 +1887,10 @@ providers:
                       listen 443 ssl http2;
                       server_name [your host name];
                       client_max_body_size 50M;
-                      
+
                       ssl_certificate [path to your key];
                       ssl_certificate_key [path to your certificate];
-                      
+
                       location /[your private url] {
                            if ($http_authorization != '[your private password]') {
                                return 403;
@@ -1922,8 +1922,7 @@ providers:
         collector:
           module: intelmq.bots.collectors.github_api.collector_github_contents_api
           parameters:
-            basic_auth_username: USERNAME
-            basic_auth_password: PASSWORD
+            personal_access_token: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
             repository: StrangerealIntel/DailyIOC
             regex: .*.json
         parser:
