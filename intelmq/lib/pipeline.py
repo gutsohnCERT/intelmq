@@ -261,8 +261,7 @@ class Redis(Pipeline):
                 else:
                     break
             if not retval:
-                retval = self.pipe.brpoplpush(self.source_queue,
-                                              self.internal_queue, 0)
+                retval = self.pipe.blmove(self.source_queue, self.internal_queue, 0, 'RIGHT', 'LEFT')
         except Exception as exc:
             raise exceptions.PipelineError(exc)
         else:
