@@ -6,6 +6,7 @@
 import imaplib
 import re
 import ssl
+import dateutil
 
 from intelmq.lib.bot import CollectorBot
 from intelmq.lib.exceptions import MissingDependencyError
@@ -30,6 +31,8 @@ class MailCollectorBot(CollectorBot):
     sent_from = None
     subject_regex = None
     http_verify_cert: bool = True
+    delete_old_messages: bool = False
+    delete_older_than: str = None
 
     def init(self):
         if imbox is None:
@@ -65,6 +68,12 @@ class MailCollectorBot(CollectorBot):
 
         if emails:
             for uid, message in emails:
+
+                if self.delete_old_messages:
+                    messages_received_before = emails(
+                        date__lt=dateutil.parser.parse(self.delete_older_than).isoformat())
+                    if (uid, message) in messages_received_before:
+                        mailbox.delete(uid)
 
                 if (self.subject_regex and
                         not re.search(self.subject_regex,
