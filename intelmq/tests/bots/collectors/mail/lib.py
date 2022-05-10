@@ -21,6 +21,8 @@ if os.getenv('INTELMQ_TEST_EXOTIC'):
         EMAIL_FAKE_ATTACHMENT = parse_email(handle.read())
     with open(os.path.join(os.path.dirname(__file__), 'text_attachment.eml')) as handle:
         EMAIL_TEXT_ATTACHMENT = parse_email(handle.read())
+    with open(os.path.join(os.path.dirname(__file__), 'foobartxt_delete_older_than.eml')) as handle:
+        EMAIL_TXT_DELETE_OLDER_THAN = parse_email(handle.read())
 
 
 class MockedImbox():
@@ -35,6 +37,9 @@ class MockedImbox():
         pass
 
     def logout(self):
+        pass
+
+    def delete(self, uid):
         pass
 
 
@@ -57,3 +62,8 @@ class MockedBadAttachmentImbox(MockedImbox):
 class MockedTextAttachmentImbox(MockedImbox):
     def messages(self, *args, **kwargs):
         yield 0, deepcopy(EMAIL_TEXT_ATTACHMENT)
+
+
+class MockedTxtDeleteOlderThanImbox(MockedImbox):
+    def messages(self, *args, **kwargs):
+        yield 0, deepcopy(EMAIL_TXT_DELETE_OLDER_THAN)
